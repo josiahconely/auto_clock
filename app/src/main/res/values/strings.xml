@@ -3,4 +3,7 @@
     <string name="Welcome">Auto Clock</string>
     <string name="clock_out_button">Clock Out</string>
     <string name="clock_in_button">Clock In</string>
+    <string name="time_text_view">Current Time</string>
+    <string name="last_clock_in_text_view">Last Clock In:</string>
+    <string name="last_clock_out">Last Clock Out:</string>
 </resources>
