@@ -1,107 +1,130 @@
 package com.example.auto_clock;
-
+import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-
-import android.preference.Preference;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
-import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+
 import static android.content.Context.MODE_PRIVATE;
 
 
-public class BusinessLogic extends AppCompatActivity {
-    public static final String MyPREFERENCES = "MyPrefs" ;
+public class BusinessLogic {
+    // DataBase helper
+    private DBhelper dbHelper;
+    private Context context;
+    private SQLiteDatabase database;
+    public static final String MyPREFERENCES = "MyPrefs";
     SharedPreferences sharedpreferences;
-
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public BusinessLogic(Context context) {
+        this.context = context;
+        dbHelper = new DBhelper(context);
     }
 
-    public void create_dataBase () {
-        // creates the data base
-        SQLiteDatabase sqLiteDatabase = getBaseContext().openOrCreateDatabase("clockInOut.db", MODE_PRIVATE, null);
-            // initializes the table inOutLog
-        String sql;
-        sql = "CREATE TABLE IF NOT EXISTS inOutLog(in_time TEXT, out_time TEXT);";
-        sqLiteDatabase.execSQL(sql);
+    public void close() {
+        dbHelper.close();
     }
 
-    public void display_DataBase_toast(){
-        SQLiteDatabase sqLiteDatabase = getBaseContext().openOrCreateDatabase("clockInOut.db", MODE_PRIVATE, null);
-        Cursor query = sqLiteDatabase.rawQuery("SELECT * FROM inOutLog;", null);
-        if(query.moveToFirst()) {
+    public void addLogInOut(LogEntry log){
+        database = dbHelper.getWritableDatabase();
+
+        //Sets the values to be added to the table
+        ContentValues values = new ContentValues();
+        values.put(DBhelper.COL_IN_TIME, Long.toString(log.get_in().getTimeInMillis()));
+        values.put(DBhelper.COL_OUT_TIME, Long.toString(log.get_out().getTimeInMillis()));
+        values.put(DBhelper.COL_LATITUDE, log.get_latitude());
+        values.put(DBhelper.COL_LONGITUDE, log.get_longitude());
+
+        database.insert(DBhelper.TABLE_NAME, null, values);
+        System.out.println("Record Added");
+        database.close();
+    }
+
+    // Returns List of Entire Log
+    public List<LogEntry> getAllLog() {
+        Calendar calendar = Calendar.getInstance();
+
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        List<LogEntry> log = new ArrayList<LogEntry>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + DBhelper.TABLE_NAME;
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
             do {
-                String in = query.getString(0);
-                String out = query.getString(1);
-                Toast.makeText(this, "In = " +in + " Out = " + out, Toast.LENGTH_LONG).show();
-            } while(query.moveToNext());
+                LogEntry logEntry = new LogEntry();
+                calendar.setTimeInMillis(Long.valueOf(cursor.getString(0)));
+                logEntry.set_in(calendar);
+                calendar.setTimeInMillis(Long.valueOf(cursor.getString(1)));
+                logEntry.set_out(calendar);
+                logEntry.set_latitude(cursor.getString(2));
+                logEntry.set_longitude(cursor.getString(3));
+                // Adding LogIn and Out time to list
+                log.add(logEntry);
+            } while (cursor.moveToNext());
         }
-        query.close();
-        sqLiteDatabase.close();
-    }
 
+        // return logInOut list
+        return log;
+    }
 
     //saves a preference that user is clocked in
     //saves a preference of the clock in time
     public boolean clockIn(){
-        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        sharedpreferences = context.getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
         //checks the isClockedIn flag to determin what to do
-        if(!(sharedpreferences.getBoolean("isClockedIn", false))) {
+        if((sharedpreferences.getBoolean("isClockedIn", false))) {
+            return false;
+        }
+        else {
             //gets the current time
             Calendar calender = Calendar.getInstance();
 
             /*saves an "in_time" to preferences so that it can be added to the database when
             clock out is clicked*/
             SharedPreferences.Editor editor = sharedpreferences.edit();
-            editor.putString("in_time", calender.getTime().toString());
+            editor.putString("in_time", Long.toString(calender.getTimeInMillis()));
             //updates the isClockedIn flag
             editor.putBoolean("isClockedIn", true);
             editor.commit();
-
             return true;
         }
-        return false;
     }
 
     public boolean clockOut(){
-        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        sharedpreferences = context.getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
 
         //checks the isClockedIn flag to determin what to do
         if (sharedpreferences.getBoolean("isClockedIn", false)) {
             //gets the current time
-            Calendar calender = Calendar.getInstance();
+            Calendar out = Calendar.getInstance();
+            //gets the In time
+            Calendar in = Calendar.getInstance();
+            String in_time = sharedpreferences.getString("in_time", null);
+            LogEntry logEntry = new LogEntry();
+            in.setTimeInMillis(Long.valueOf(in_time));
+            //Builds the log entry
+            logEntry.set_in(in);
+            logEntry.set_out(out);
 
-            // collects the in_time from saved prefrences
-            String in_time = sharedpreferences.getString("in_time", "error, no in_time");
+            //Commits the Log entry
+            addLogInOut(logEntry);
+
             //updates the isClockedIn preference
             SharedPreferences.Editor editor = sharedpreferences.edit();
             editor.putBoolean("isClockedIn", false);
             editor.commit();
 
-            // creates sql update
-            String sql;
-            //enters into database a new row of in,out time
-            SQLiteDatabase sqLiteDatabase = getBaseContext().openOrCreateDatabase("clockInOut.db", MODE_PRIVATE, null);
-            sql = String.format("INSERT INTO inOutLog VALUES('%1$s' , '%2$s');", in_time, calender.getTime().toString());
-            sqLiteDatabase.execSQL(sql);
-
-            display_DataBase_toast();
             return true;
         }
         //if clocked out pressed twice
         else{return false;}
     }
-
-
-
-
 }
 
 
