@@ -22,7 +22,7 @@ public class DBhelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
     // creation SQLite statement
-    private static final String DATABASE_CREATE = "CREATE TABLE " + TABLE_NAME
+    private static final String DATABASE_CREATE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME
             + "(" + COL_IN_TIME + " TEXT , "
             + COL_OUT_TIME + " TEXT , " + COL_LONGITUDE + " TEXT," + COL_LATITUDE + " TEXT);";
 

@@ -18,6 +18,7 @@ public class BusinessLogic {
     private SQLiteDatabase database;
     public static final String MyPREFERENCES = "MyPrefs";
     SharedPreferences sharedpreferences;
+
     public BusinessLogic(Context context) {
         this.context = context;
         dbHelper = new DBhelper(context);
@@ -26,6 +27,7 @@ public class BusinessLogic {
     public void close() {
         dbHelper.close();
     }
+
 
     public void addLogInOut(LogEntry log){
         database = dbHelper.getWritableDatabase();
@@ -51,8 +53,9 @@ public class BusinessLogic {
         List<LogEntry> log = new ArrayList<LogEntry>();
         // Select All Query
         String selectQuery = "SELECT  * FROM " + DBhelper.TABLE_NAME;
-
         Cursor cursor = db.rawQuery(selectQuery, null);
+
+
 
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
@@ -66,7 +69,14 @@ public class BusinessLogic {
                 logEntry.set_longitude(cursor.getString(3));
                 // Adding LogIn and Out time to list
                 log.add(logEntry);
+                System.out.println(logEntry.get_in().toString());
             } while (cursor.moveToNext());
+        }
+
+        //Testing
+        System.out.println("Bellow Checks Logs are true");
+        for (LogEntry log_: log ) {
+            System.out.println(log_.get_in().toString());
         }
 
         // return logInOut list

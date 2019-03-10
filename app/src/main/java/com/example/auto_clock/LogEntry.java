@@ -10,6 +10,14 @@ public class LogEntry {
 
     public LogEntry(){}
 
+   /*public LogEntry(LogEntry log){
+        this._in = log._in;
+        this._out = log._out;
+        this._latitude = log._latitude;
+        this._longitude = log._longitude;
+
+    }*/
+
     public LogEntry(Calendar in, Calendar out){
         this._in = in;
         this._out = out;

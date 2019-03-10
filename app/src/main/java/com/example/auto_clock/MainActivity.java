@@ -1,4 +1,5 @@
 package com.example.auto_clock;
+import android.content.Intent;
 import android.os.Bundle;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -70,6 +71,12 @@ public class MainActivity extends AppCompatActivity {
         }
         //if clocked out pressed twice
         else{textView_status.setText("Already Clocked Out");}
+    }
+
+
+    public void onViewLog (View v){
+        Intent intent = new Intent(this, LogViewAndEditActivity.class);
+        startActivity(intent);
     }
 }
 

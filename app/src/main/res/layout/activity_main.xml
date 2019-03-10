@@ -145,4 +145,18 @@
         app:layout_constraintStart_toEndOf="@+id/Last_Clock_Out"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/ViewLog"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="92dp"
+        android:background="@color/design_default_color_primary_dark"
+        android:onClick="onViewLog"
+        android:text="View Log"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+
 </android.support.constraint.ConstraintLayout>
