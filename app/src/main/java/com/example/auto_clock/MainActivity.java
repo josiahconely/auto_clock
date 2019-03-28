@@ -14,10 +14,6 @@ import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
-    //public static final String MyPREFERENCES = "MyPrefs" ;
-    //SharedPreferences sharedpreferences;
-    //BusinessLogic businessLogic;
-    //DataBase
     private BusinessLogic busLogic;
 
     @Override

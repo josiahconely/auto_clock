@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LogViewAndEditActivity">
+    tools:context=".LogViewAndEditActivity"
+    >
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBarLayout"
@@ -34,10 +35,11 @@
         android:id="@+id/recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
+        android:paddingTop="50dp"
         android:scrollbars="vertical"
         android:visibility="visible"
         app:layout_anchor="@+id/appBarLayout"
-        app:layout_anchorGravity="bottom|center" />
+        app:layout_anchorGravity="bottom|center"
+        android:background="@android:color/darker_gray"/>
 
 </android.support.design.widget.CoordinatorLayout>

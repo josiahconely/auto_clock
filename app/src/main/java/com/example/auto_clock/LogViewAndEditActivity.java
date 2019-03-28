@@ -1,5 +1,6 @@
 package com.example.auto_clock;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -7,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -25,25 +25,20 @@ public class LogViewAndEditActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_log_view_and_edit);
+        setContentView(R.layout.activity_log_view);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
 
         layoutManager = new LinearLayoutManager(this);
         recyclerView = new RecyclerView(this);
         recyclerView = findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(layoutManager);
-
         busLogic = new BusinessLogic(this);
-
         list  = new ArrayList<>();
         stringList = new ArrayList<>();
         list = busLogic.getAllLog();
 
         //creates string for display from list of LogEntry
-        stringList.add("Hello World");
         String timeIn;
         String timeOut;
         String format;
@@ -52,13 +47,10 @@ public class LogViewAndEditActivity extends AppCompatActivity {
             timeOut = (item.get_out().getTime().toString());
             format = "IN TIME:" + timeIn+ "  \nOUT TIME: " + timeOut;
             stringList.add(format);
-            stringList.add("Hello World");
         }
 
         adapter = new RecylerAdapter(stringList);
-        //recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
-
 
 
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -71,5 +63,11 @@ public class LogViewAndEditActivity extends AppCompatActivity {
         });
 
     }
+
+    public void onEditEntry(View v){
+        Intent intent = new Intent(this, edit_log_entry.class);
+        startActivity(intent);
+    }
+
 
 }
