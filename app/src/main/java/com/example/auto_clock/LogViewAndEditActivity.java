@@ -20,6 +20,7 @@ public class LogViewAndEditActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     private List<LogEntry> list;
     private List<String> stringList;
+
     BusinessLogic busLogic;
 
     @Override
@@ -37,7 +38,6 @@ public class LogViewAndEditActivity extends AppCompatActivity {
         list  = new ArrayList<>();
         stringList = new ArrayList<>();
         list = busLogic.getAllLog();
-
         //creates string for display from list of LogEntry
         String timeIn;
         String timeOut;
@@ -49,9 +49,16 @@ public class LogViewAndEditActivity extends AppCompatActivity {
             stringList.add(format);
         }
 
-        adapter = new RecylerAdapter(stringList);
+        adapter = new RecylerAdapter(list, this);
         recyclerView.setAdapter(adapter);
 
+        adapter.setOnItemClickListener(new RecylerAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                System.out.println("Got here");
+                onEditEntry(adapter.view);
+            }
+        });
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -61,7 +68,6 @@ public class LogViewAndEditActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-
     }
 
     public void onEditEntry(View v){

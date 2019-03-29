@@ -17,6 +17,8 @@ public class edit_log_entry extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
+
+
     }
 
 }

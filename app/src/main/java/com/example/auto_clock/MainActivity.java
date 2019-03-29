@@ -14,13 +14,15 @@ import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String MyPREFERENCES = "myPreferences";
     private BusinessLogic busLogic;
+    private SharedPreferences sharedpreferences;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //SharedPreferences sharedPreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         //sets date and time for Display
         Calendar calender = Calendar.getInstance();
         String currentDate = DateFormat.getDateInstance(DateFormat.FULL).format(calender.getTime());
@@ -34,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         Button clock_out_btn = (Button) findViewById(R.id.button_out);
 
         busLogic = new BusinessLogic(this);
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
     }
 
     public void OnClickClockIn (View v){
@@ -53,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void OnClickClockOut (View v) {
-        //sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         TextView textView_status = findViewById(R.id.text_view_status);
 
         //checks the isClockedIn flag to determin what to do

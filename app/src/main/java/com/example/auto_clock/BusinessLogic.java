@@ -28,7 +28,6 @@ public class BusinessLogic {
         dbHelper.close();
     }
 
-
     public void addLogInOut(LogEntry log){
         database = dbHelper.getWritableDatabase();
 
@@ -46,29 +45,28 @@ public class BusinessLogic {
 
     // Returns List of Entire Log
     public List<LogEntry> getAllLog() {
-        Calendar calendar = Calendar.getInstance();
+
 
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-
         List<LogEntry> log = new ArrayList<LogEntry>();
         // Select All Query
         String selectQuery = "SELECT  * FROM " + DBhelper.TABLE_NAME;
         Cursor cursor = db.rawQuery(selectQuery, null);
 
-
-
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
                 LogEntry logEntry = new LogEntry();
+                Calendar calendar = Calendar.getInstance();
                 calendar.setTimeInMillis(Long.valueOf(cursor.getString(0)));
                 logEntry.set_in(calendar);
-                calendar.setTimeInMillis(Long.valueOf(cursor.getString(1)));
-                logEntry.set_out(calendar);
+                Calendar calendar2 = Calendar.getInstance();
+                calendar2.setTimeInMillis(Long.valueOf(cursor.getString(1)));
+                logEntry.set_out(calendar2);
                 logEntry.set_latitude(cursor.getString(2));
                 logEntry.set_longitude(cursor.getString(3));
                 // Adding LogIn and Out time to list
-                log.add(logEntry);
+                log.add(0,logEntry);
                 System.out.println(logEntry.get_in().toString());
             } while (cursor.moveToNext());
         }
