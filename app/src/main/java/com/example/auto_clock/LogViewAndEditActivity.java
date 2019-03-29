@@ -43,7 +43,6 @@ public class LogViewAndEditActivity extends AppCompatActivity {
         list = busLogic.getAllLog();
 
         //creates string for display from list of LogEntry
-        stringList.add("Hello World");
         String timeIn;
         String timeOut;
         String format;
@@ -52,7 +51,6 @@ public class LogViewAndEditActivity extends AppCompatActivity {
             timeOut = (item.get_out().getTime().toString());
             format = "IN TIME:" + timeIn+ "  \nOUT TIME: " + timeOut;
             stringList.add(format);
-            stringList.add("Hello World");
         }
 
         adapter = new RecylerAdapter(stringList);

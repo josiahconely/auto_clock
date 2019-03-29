@@ -16,12 +16,13 @@ public class BusinessLogic {
     private DBhelper dbHelper;
     private Context context;
     private SQLiteDatabase database;
-    public static final String MyPREFERENCES = "MyPrefs";
-    SharedPreferences sharedpreferences;
+    private static final String MyPREFERENCES = "MyPrefs";
+    private SharedPreferences sharedpreferences;
 
     public BusinessLogic(Context context) {
         this.context = context;
         dbHelper = new DBhelper(context);
+        sharedpreferences = context.getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
     }
 
     public void close() {
@@ -47,15 +48,12 @@ public class BusinessLogic {
     // Returns List of Entire Log
     public List<LogEntry> getAllLog() {
         Calendar calendar = Calendar.getInstance();
-
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         List<LogEntry> log = new ArrayList<LogEntry>();
         // Select All Query
         String selectQuery = "SELECT  * FROM " + DBhelper.TABLE_NAME;
         Cursor cursor = db.rawQuery(selectQuery, null);
-
-
 
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
@@ -87,6 +85,7 @@ public class BusinessLogic {
     //saves a preference of the clock in time
     public boolean clockIn(){
         sharedpreferences = context.getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
+        System.out.println("status of isClocked in " +sharedpreferences.getBoolean("isClockedIn", false));
         //checks the isClockedIn flag to determin what to do
         if((sharedpreferences.getBoolean("isClockedIn", false))) {
             return false;
