@@ -14,7 +14,7 @@
             android:label="@string/title_activity_edit_log_entry"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
-            android:name=".LogViewAndEditActivity"
+            android:name=".LogViewActivity"
             android:label="@string/title_activity_log_view_and_edit"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".MainActivity">

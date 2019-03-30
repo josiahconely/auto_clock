@@ -14,7 +14,7 @@
         android:layout_marginTop="196dp"
         android:headerBackground="@color/colorIn"
         android:numbersSelectorColor="@color/colorIn"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
@@ -95,6 +95,7 @@
 
     <Button
         android:id="@+id/Change_date"
+        android:onClick="onClickChangeDate"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="30dp"
@@ -107,6 +108,7 @@
 
     <Button
         android:id="@+id/Change_In_Time"
+        android:onClick="onClickEditInTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="64dp"
@@ -118,6 +120,7 @@
 
     <Button
         android:id="@+id/Edit_Out_Time"
+        android:onClick="onClickEditOutTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="63dp"

@@ -13,7 +13,7 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LogViewAndEditActivity extends AppCompatActivity {
+public class LogViewActivity extends AppCompatActivity {
 
     private RecylerAdapter adapter;
     private RecyclerView recyclerView;

@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void onViewLog (View v){
-        Intent intent = new Intent(this, LogViewAndEditActivity.class);
+        Intent intent = new Intent(this, LogViewActivity.class);
         startActivity(intent);
     }
 }

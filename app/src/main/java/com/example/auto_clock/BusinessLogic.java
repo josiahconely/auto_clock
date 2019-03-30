@@ -43,10 +43,15 @@ public class BusinessLogic {
         database.close();
     }
 
+    //returns a single Item from Database
+    public LogEntry getLogEntryRow(int indexOfRow){
+        List<LogEntry> log = new ArrayList<LogEntry>();
+        log  = getAllLog();
+        return log.get(indexOfRow);
+    }
+
     // Returns List of Entire Log
     public List<LogEntry> getAllLog() {
-
-
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         List<LogEntry> log = new ArrayList<LogEntry>();
         // Select All Query
@@ -76,7 +81,6 @@ public class BusinessLogic {
         for (LogEntry log_: log ) {
             System.out.println(log_.get_in().toString());
         }
-
         // return logInOut list
         return log;
     }
@@ -119,15 +123,12 @@ public class BusinessLogic {
             //Builds the log entry
             logEntry.set_in(in);
             logEntry.set_out(out);
-
             //Commits the Log entry
             addLogInOut(logEntry);
-
             //updates the isClockedIn preference
             SharedPreferences.Editor editor = sharedpreferences.edit();
             editor.putBoolean("isClockedIn", false);
             editor.commit();
-
             return true;
         }
         //if clocked out pressed twice

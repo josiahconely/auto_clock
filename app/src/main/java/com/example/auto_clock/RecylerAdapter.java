@@ -61,9 +61,10 @@ public class RecylerAdapter extends RecyclerView.Adapter<RecylerAdapter.MyViewHo
                     if (listener != null) {
                         int position = getAdapterPosition();
                         SharedPreferences.Editor prefsEditor = sharedpreferences.edit();
-                        prefsEditor.putString("Item to Edit", Integer.toString(position));
+                        prefsEditor.putString("Item_to_Edit", Integer.toString(position));
                         prefsEditor.commit();
                         System.out.println("Got here");
+                        //records the item in the list to edit
                         System.out.println(sharedpreferences.getString("Item to Edit", ""));
                         if (position != RecyclerView.NO_POSITION) {
                             listener.onItemClick(position);
@@ -85,7 +86,7 @@ public class RecylerAdapter extends RecyclerView.Adapter<RecylerAdapter.MyViewHo
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         LogEntry current_entry = list.get(position);
-        String v = current_entry.get_in().getTime().toString() + "  "
+        String v = current_entry.get_in().getTime().toString() + "  \n "
                 + current_entry.get_out().getTime().toString();
         holder.text1.setText(v);
     }
