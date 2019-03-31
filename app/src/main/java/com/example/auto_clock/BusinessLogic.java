@@ -43,6 +43,27 @@ public class BusinessLogic {
         database.close();
     }
 
+    //
+    public void replaceLogRow(LogEntry oldlog, LogEntry newlog){
+        database = dbHelper.getWritableDatabase();
+
+
+        //Sets the values to be added to the table
+        ContentValues values = new ContentValues();
+        values.put(DBhelper.COL_IN_TIME, Long.toString(newlog.get_in().getTimeInMillis()));
+        values.put(DBhelper.COL_OUT_TIME, Long.toString(newlog.get_out().getTimeInMillis()));
+        values.put(DBhelper.COL_LATITUDE, newlog.get_latitude());
+        values.put(DBhelper.COL_LONGITUDE, newlog.get_longitude());
+
+
+        String selectQuery ="DELETE FROM  TimeLog WHERE _in = " + Long.toString(oldlog.get_in().getTimeInMillis());
+        database.execSQL(selectQuery);
+        database.insert(DBhelper.TABLE_NAME, null, values);
+        System.out.println("Record Added");
+        database.close();
+    }
+
+
     //returns a single Item from Database
     public LogEntry getLogEntryRow(int indexOfRow){
         List<LogEntry> log = new ArrayList<LogEntry>();

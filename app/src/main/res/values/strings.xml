@@ -10,10 +10,12 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_log_view_and_edit">LogViewAndEditActivity</string>
     <string name="title_activity_edit_log_entry">edit_log_entry</string>
-    <string name="Edit_In_Time">Edit In Time</string>
-    <string name="Edit_Out_Time">Edit Out Time</string>
     <string name="Save">SAVE</string>
     <string name="Cancel">CANCEL</string>
     <string name="Change_Date">Change Date</string>
+    <string name="Edit_in_time">Edit In Time</string>
     <string name="Edit_out_time">Edit Out Time</string>
+    <string name="Edit_in_date">Edit In Date</string>
+    <string name="Edit_out_date">Edit Out Date</string>
+    <string name="DataBaseName">DataBase.db</string>
 </resources>

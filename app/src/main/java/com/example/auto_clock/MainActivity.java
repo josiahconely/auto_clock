@@ -28,9 +28,8 @@ public class MainActivity extends AppCompatActivity {
         String currentDate = DateFormat.getDateInstance(DateFormat.FULL).format(calender.getTime());
         String currentTime = DateFormat.getTimeInstance(DateFormat.MEDIUM).format(calender.getTime());
         TextView textView_date = findViewById(R.id.text_view_date);
-        TextView textView_time = findViewById(R.id.text_view_time);
         textView_date.setText(currentDate);
-        textView_time.setText(currentTime);
+
 
         Button clock_in_btn = (Button) findViewById(R.id.button_in);
         Button clock_out_btn = (Button) findViewById(R.id.button_out);

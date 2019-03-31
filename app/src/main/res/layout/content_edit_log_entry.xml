@@ -11,7 +11,7 @@
         android:id="@+id/In_timePicker"
         android:layout_width="248dp"
         android:layout_height="366dp"
-        android:layout_marginTop="196dp"
+        android:layout_marginTop="136dp"
         android:headerBackground="@color/colorIn"
         android:numbersSelectorColor="@color/colorIn"
         android:visibility="visible"
@@ -24,9 +24,9 @@
         android:id="@+id/Out_timePicker"
         android:layout_width="248dp"
         android:layout_height="366dp"
-        android:layout_marginTop="196dp"
-        android:headerBackground="@color/colorIn"
-        android:numbersSelectorColor="@color/colorIn"
+        android:layout_marginTop="136dp"
+        android:headerBackground="@color/colorOut"
+        android:numbersSelectorColor="@color/colorOut"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
@@ -34,22 +34,24 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-    <CalendarView
+    <DatePicker
         android:id="@+id/In_Time_calender"
-        android:layout_width="346dp"
-        android:layout_height="328dp"
-        android:layout_marginTop="196dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="136dp"
+        android:headerBackground="@color/colorIn"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.43"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <CalendarView
+    <DatePicker
         android:id="@+id/Out_Time_calender"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="196dp"
+        android:layout_marginTop="136dp"
+        android:headerBackground="@color/colorOut"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.459"
@@ -58,16 +60,17 @@
 
 
     <TextView
-        android:id="@+id/editINOUTtime"
-        android:layout_width="327dp"
-        android:layout_height="46dp"
-        android:layout_marginTop="148dp"
-        android:text="@string/Edit_In_Time"
+        android:id="@+id/editINOUTtimeDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="72dp"
+        android:text="@string/Edit_in_time"
+        android:textAlignment="center"
         android:textSize="36sp"
         android:textStyle="bold"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.333"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -76,6 +79,7 @@
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="30dp"
+        android:onClick="onClickSave"
         android:text="@string/Save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/Change_date"
@@ -87,6 +91,7 @@
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="30dp"
+        android:onClick="onClickCancel"
         android:text="@string/Cancel"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -95,10 +100,10 @@
 
     <Button
         android:id="@+id/Change_date"
-        android:onClick="onClickChangeDate"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="30dp"
+        android:onClick="onClickChangeDate"
         android:text="@string/Change_Date"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/cancel"
@@ -108,11 +113,13 @@
 
     <Button
         android:id="@+id/Change_In_Time"
-        android:onClick="onClickEditInTime"
-        android:layout_width="wrap_content"
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
-        android:text="@string/Edit_In_Time"
+        android:layout_marginTop="24dp"
+        android:backgroundTint="@color/colorIn"
+        android:elevation="0dp"
+        android:onClick="onClickEditInTime"
+        android:text="@string/Edit_in_time"
         app:layout_constraintEnd_toStartOf="@+id/Edit_Out_Time"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -120,14 +127,22 @@
 
     <Button
         android:id="@+id/Edit_Out_Time"
-        android:onClick="onClickEditOutTime"
-        android:layout_width="wrap_content"
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="63dp"
+        android:layout_marginTop="24dp"
+        android:backgroundTint="@color/colorOut"
+        android:onClick="onClickEditOutTime"
         android:text="@string/Edit_out_time"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/Change_In_Time"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="20dp" />
 
 </android.support.constraint.ConstraintLayout>
