@@ -15,6 +15,7 @@ import android.widget.CalendarView;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.util.Calendar;
 
@@ -143,7 +144,7 @@ public class edit_log_entry extends AppCompatActivity {
 
 
 
-
+        Toast.makeText(this, "Log Entry Saved!", Toast.LENGTH_LONG).show();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }

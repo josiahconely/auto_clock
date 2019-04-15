@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.text.DateFormat;
 import java.util.Calendar;
 
@@ -26,16 +28,23 @@ public class MainActivity extends AppCompatActivity {
         //sets date and time for Display
         Calendar calender = Calendar.getInstance();
         String currentDate = DateFormat.getDateInstance(DateFormat.FULL).format(calender.getTime());
-        String currentTime = DateFormat.getTimeInstance(DateFormat.MEDIUM).format(calender.getTime());
+
         TextView textView_date = findViewById(R.id.text_view_date);
         textView_date.setText(currentDate);
 
 
-        Button clock_in_btn = (Button) findViewById(R.id.button_in);
-        Button clock_out_btn = (Button) findViewById(R.id.button_out);
+        //Button clock_in_btn = (Button) findViewById(R.id.button_in);
+        //Button clock_out_btn = (Button) findViewById(R.id.button_out);
 
         busLogic = new BusinessLogic(this);
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+
+
+        //Starts background service on start of app
+        AutoStart backgroundService = new AutoStart();
+        Intent dummyIntent = new Intent();
+        backgroundService.onReceive(this,dummyIntent);
+
     }
 
     public void OnClickClockIn (View v){
