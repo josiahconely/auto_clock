@@ -18,4 +18,5 @@
     <string name="Edit_in_date">Edit In Date</string>
     <string name="Edit_out_date">Edit Out Date</string>
     <string name="DataBaseName">DataBase.db</string>
+    <string name="GeoZone" />
 </resources>

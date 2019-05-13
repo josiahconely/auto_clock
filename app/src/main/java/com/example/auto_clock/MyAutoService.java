@@ -11,8 +11,11 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
+import android.widget.Toast;
 
 import static android.support.v4.app.ActivityCompat.requestPermissions;
 import static com.example.auto_clock.BusinessLogic.MyPREFERENCES;
@@ -25,14 +28,12 @@ import static com.example.auto_clock.BusinessLogic.MyPREFERENCES;
  */
 public class MyAutoService extends IntentService {
     // IntentService can perform, e.g. ACTION_FETCH_NEW_ITEMS
-    private static final String ACTION_RUN_GPS_CHECK = "com.example.auto_clock.action.RunGPSCheck";
+    //Intent name hardcoded in Main Activity
+    private static final String ACTION_RUN_GPS_CHECK = "com.example.auto_clock.action.RunGPSCheck"; //
     private BusinessLogic bl;
-
-
     public MyAutoService() {
         super("MyAutoService");
     }
-
 
     /**
      * Starts this service to perform action ACTION_RUN_GPS_CHECK with the given parameters. If
@@ -40,7 +41,6 @@ public class MyAutoService extends IntentService {
      *
      * @see IntentService
      */
-
     public static void startActionRunGPSCheck(Context context, String param1, String param2) {
         Intent intent = new Intent(context, MyAutoService.class);
         intent.setAction(ACTION_RUN_GPS_CHECK);
@@ -51,7 +51,7 @@ public class MyAutoService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
             final String action = intent.getAction();
-            if (true) {//ACTION_RUN_GPS_CHECK.equals(action)) { //FIX!!!!!
+            if (ACTION_RUN_GPS_CHECK.equals(action)) {
                 handleActionRunGPSCheck();
             }
         }
@@ -65,18 +65,22 @@ public class MyAutoService extends IntentService {
 
         bl = new BusinessLogic(this);
         while (true) {
+
+            if (checkMovedIn()) {
+                System.out.println("Auto service clock in");
+                bl.clockIn();
+                ShowToastInIntentService("Auto Clocked In");
+
+            } else if (checkMovedOut()) {
+                System.out.println("Auto service clock out");
+                bl.clockOut();
+                ShowToastInIntentService("Auto Clocked Out");
+            }
+            //Pause for 60 seconds
             try {
                 Thread.sleep(60000);
             } catch (InterruptedException ex) {
                 android.util.Log.d("YourApplicationName", ex.toString());
-            }
-
-            checkIfIn();
-
-            if (checkMovedIn()) {
-                bl.clockIn();
-            } else if (checkMovedOut()) {
-                bl.clockOut();
             }
         }
     }
@@ -84,17 +88,18 @@ public class MyAutoService extends IntentService {
     private boolean checkMovedIn() {
         SharedPreferences sharedpreferences;
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-
         //If in, but was not in
-        if (sharedpreferences.getBoolean("isIn", false)) {
-            if (!sharedpreferences.getBoolean("wasIn", true)) {
+        if ( checkIfIn()) {
+            if (!sharedpreferences.getBoolean("wasIn", false)) {
                 SharedPreferences.Editor editor = sharedpreferences.edit();
                 editor.putBoolean("wasIn", true);
                 //updates the wasOutflag flag
                 editor.commit();
+                System.out.println("MyAutoService: checkMovedIn: returned:" + true);
                 return true;
             }
         }
+        System.out.println("MyAutoService: checkMovedIn: returned:" + false);
         return false;
     }
 
@@ -103,87 +108,112 @@ public class MyAutoService extends IntentService {
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
 
         //If not in anymore, but was in
-        if (!sharedpreferences.getBoolean("isIn", true)) {
-            if (sharedpreferences.getBoolean("wasIn", true)) {
+        if (!checkIfIn()) {
+            if (sharedpreferences.getBoolean("wasIn", false)) {
                 SharedPreferences.Editor editor = sharedpreferences.edit();
                 editor.putBoolean("wasIn", false);
                 //updates the wasInflag flag
                 editor.commit();
+                System.out.println("MyAutoService: checkMovedOut: returned:" + true);
                 return true;
             }
         }
+        System.out.println("MyAutoService: checkMovedOut: returned:" + false);
         return false;
     }
 
-    private void checkIfIn() {
+    private Boolean checkIfIn() {
         SharedPreferences sharedpreferences;
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         String zone = "";
+        SharedPreferences.Editor editor = sharedpreferences.edit();
         if (isInZone(zone)) {
-            SharedPreferences.Editor editor = sharedpreferences.edit();
             editor.putBoolean("isIn", true);
             editor.commit();
-        } else {
-            SharedPreferences.Editor editor = sharedpreferences.edit();
-            editor.putBoolean("isIn", false);
-            editor.commit();
+            //System.out.println("MyAutoService: checkIfIn: returned:" + true);
+            return true;
         }
+        editor.putBoolean("isIn", false);
+        editor.commit();
+        //System.out.println("MyAutoService: checkIfIn: returned:" + false);
+        return false;
     }
 
     private boolean isInZone(String zone) {
         SharedPreferences sharedpreferences;
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         String newLocationString = "";
-        LocationManager lm = (LocationManager) getSystemService(LOCATION_SERVICE);
+        LocationManager lm = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         LocationListener LL = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
                 SharedPreferences sharedpreferences;
                 sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedpreferences.edit();
-                editor.putString("newLocationString", location.getLongitude() + " " + location.getLatitude() );
+                editor.putString("newLocationString", location.getLongitude() + " " + location.getLatitude());
                 editor.commit();
             }
-
             @Override
             public void onStatusChanged(String provider, int status, Bundle extras) {
-
             }
-
             @Override
             public void onProviderEnabled(String provider) {
-
             }
-
+            //launches Permissions access
             @Override
             public void onProviderDisabled(String provider) {
-                Intent i = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(i);
             }
         };
+
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED &&
+                == PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                        != PackageManager.PERMISSION_GRANTED) {
+                        == PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
-            //Intent i = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-            //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            //startActivity(i);
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
             //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
-            return false;
-        }
-        lm.requestLocationUpdates("gps", 58000, 20, LL);
-        newLocationString = sharedpreferences.getString("newLocationString", "");
-        return newLocationString == zone;
+            String locationProvider = LocationManager.GPS_PROVIDER;
 
+            lm.requestLocationUpdates(locationProvider, 60000, 0, LL);
+            //newLocationString = sharedpreferences.getString("newLocationString", "");
+            Location location = lm.getLastKnownLocation(locationProvider);
+            if (location != null) {
+                Double Lat = location.getLatitude();
+                Double Lon = location.getLongitude();
+                //System.out.println(lm.getLastKnownLocation());
+
+                System.out.println("MyAutoService: isInZone: newLocation :"
+                        + "lat:" + Lat
+                        + " Lon:" + Lon);
+                Double Lat_upLeft = 38.925732;
+                Double Lat_bottomRight = 38.925430;
+                Double Lon_upLeft = 0 - 94.538329;
+                Double Lon_bottomRight = 0 - 94.537767;
+
+                if (Lat < Lat_upLeft && Lat > Lat_bottomRight) {
+                    if (Lon > Lon_upLeft && Lon < Lon_bottomRight) {
+                        //System.out.println("MyAutoService: isInZone: returned:"+ true);
+                        return true;
+                    }
+                }
+            }
+        }
+        //System.out.println("MyAutoService: isInZone: returned:"+ false);
+        return false;
     }
 
-
-
+    public void ShowToastInIntentService(final String sText) {
+        final Context MyContext = this;
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                Toast toast1 = Toast.makeText(MyContext, sText, Toast.LENGTH_LONG);
+                toast1.show();
+            }
+        });
+    };
 }

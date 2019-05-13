@@ -23,7 +23,7 @@
         style="@style/Widget.AppCompat.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="128dp"
+        android:layout_marginTop="104dp"
         android:backgroundTint="@color/colorIn"
         android:onClick="OnClickClockIn"
         android:text="@string/clock_in_button"
@@ -37,7 +37,7 @@
         style="@style/Widget.AppCompat.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="128dp"
+        android:layout_marginTop="104dp"
         android:backgroundTint="@color/colorOut"
         android:onClick="OnClickClockOut"
         android:text="@string/clock_out_button"
@@ -50,25 +50,24 @@
         android:id="@+id/text_view_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="216dp"
+        android:layout_marginTop="188dp"
         android:text=":"
         android:textAlignment="viewStart"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/textView"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextClock
         android:id="@+id/textClock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="202dp"
-        android:layout_marginTop="240dp"
+        android:layout_marginTop="224dp"
         android:textAlignment="center"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -86,24 +85,10 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView"
-        android:layout_width="125dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="220dp"
-        android:text="@string/time_text_view"
-        android:textAlignment="viewStart"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/text_view_date"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
         android:id="@+id/last_Clock_int"
         android:layout_width="125dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="328dp"
+        android:layout_marginTop="352dp"
         android:text="@string/last_clock_in_text_view"
         android:textAlignment="viewStart"
         android:textSize="18sp"
@@ -117,7 +102,7 @@
         android:id="@+id/Last_Clock_Out"
         android:layout_width="125dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="408dp"
+        android:layout_marginTop="420dp"
         android:text="@string/last_clock_out"
         android:textAlignment="viewStart"
         android:textSize="18sp"
@@ -131,11 +116,11 @@
         android:id="@+id/Last_Clock_In_field"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="328dp"
+        android:layout_marginTop="352dp"
         android:text=":"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/last_Clock_int"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -143,7 +128,7 @@
         android:id="@+id/Last_Clock_Out_field"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginTop="409dp"
+        android:layout_marginTop="420dp"
         android:text=":"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -165,5 +150,25 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Switch
+        android:id="@+id/Auto_Switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="296dp"
+        android:checked="false"
+        android:showText="true"
+        android:splitTrack="true"
+        android:switchMinWidth="20dp"
+        android:switchTextAppearance="@style/TextAppearance.AppCompat"
+        android:text="Auto Clock "
+        android:textColorLink="@color/colorIn"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.509"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:checked="false" />
 
 </android.support.constraint.ConstraintLayout>
